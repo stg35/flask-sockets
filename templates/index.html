@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Facebook</title>
 
 
 
@@ -14,8 +14,10 @@
 
     <link rel="stylesheet" href="../static/bootstrap.min.css">
     <link rel="stylesheet" href="../static/style.css">
-    <script src="../static/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script src="../static/main.js" crossorigin="anonymous"></script>
+    <script src="../static/jquery-3.4.1.min.js"></script>
+    <script src="../static/bootstrap.min.js"></script>
+    <script src="../static/main.js"></script>
+
 </head>
 <body>
 
@@ -30,48 +32,17 @@
 
         <div class="chat-message">
 
-          <ul class="list-unstyled chat">
-            <li class="d-flex justify-content-between mb-4 bubble">
-              <div class="chat-body white p-3 ml-2 z-depth-1">
-                <div class="header">
-                  <strong>Brad Pitt</strong>
-                </div>
-                <p class="mb-0">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                  labore et dolore magna aliqua.
-                </p>
-              </div>
-            </li>
-            <li class="d-flex justify-content-between mb-4 bubble">
-              <div class="chat-body white p-3 ml-2 z-depth-1">
-                <div class="header">
-                  <strong>Brad Pitt</strong>
-                </div>
-                <p class="mb-0">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                  labore et dolore magna aliqua.
-                </p>
-              </div>
-            </li>
-            <li class="d-flex justify-content-between mb-4 bubble">
-              <div class="chat-body white p-3 ml-2 z-depth-1">
-                <div class="header">
-                  <strong>Brad Pitt</strong>
-                </div>
-                <p class="mb-0">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                  labore et dolore magna aliqua.
-                </p>
-              </div>
-            </li>
+          <ul id="list" class="list-unstyled chat" >
+
           </ul>
 
-          <div class="form">
+          <form id="mainform" onsubmit="formhelper()" action="#">
               <div class="form-group basic-textarea">
                 <textarea class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3" placeholder="Type your message here..."></textarea>
               </div>
-            <button type="button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
-          </div>
+              <input type="text" placeholder="Your name" id="person-name"></input>
+              <button type="submit" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
+          </form>
 
         </div>
 
