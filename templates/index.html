@@ -16,10 +16,52 @@
     <link rel="stylesheet" href="../static/style.css">
     <script src="../static/jquery-3.4.1.min.js"></script>
     <script src="../static/bootstrap.min.js"></script>
-    <script src="../static/main.js"></script>
+{#    <script src="../static/main.js"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
 
 </head>
 <body>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        var socket = io.connect('http://0.0.0.0:5000');
+
+        var username = "";
+
+        $("#send_button").on('click', function(){
+
+            if ((username=="") && ($('#person-name'))){
+                username = $('#person-name').val();
+                $('#person-name').remove();
+            }
+            //socket.emit('user', pname);
+            socket.emit('message',
+                {'message': $('#exampleFormControlTextarea2').val(),
+                 'user': username
+                });
+        });
+
+        socket.on('message_sent', function(msg) {
+           {#$('#list').append('<li>'+msg+'</li>');#}
+
+            var name = msg.user;
+
+            text1 = '<div class="chat-body white p-3 ml-2 z-depth-1"><div class="header"><strong>' + name + '</strong></div><p class="mb-0">';
+            text2 = '</p></div>';
+
+            var val = msg.message;
+            var parent = $('#list');
+            var li = document.createElement('li');
+            li.className = 'd-flex justify-content-between mb-4 bubble';
+            li.innerHTML = text1 + val + text2;
+            parent.append(li);
+            $('#exampleFormControlTextarea2').value = "";
+            console.log(msg);
+        });
+
+    });
+</script>
 
 <div class="card grey lighten-3 chat-room">
   <div class="card-body">
@@ -33,15 +75,21 @@
         <div class="chat-message">
 
           <ul id="list" class="list-unstyled chat" >
-
+              <li class="d-flex justify-content-between mb-4 bubble">
+                  <div class="chat-body white p-3 ml-2 z-depth-1">
+                  <div class="header">
+                      <strong>Welcome!</strong>
+                  </div>
+              </div>
+              </li>
           </ul>
 
-          <form id="mainform" onsubmit="formhelper()" action="#">
+          <form id="mainform" action="#">
               <div class="form-group basic-textarea">
                 <textarea class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3" placeholder="Type your message here..."></textarea>
               </div>
-              <input type="text" placeholder="Your name" id="person-name"></input>
-              <button type="submit" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
+              <input type="text" placeholder="Your name" id="person-name">
+              <button id="send_button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
           </form>
 
         </div>
