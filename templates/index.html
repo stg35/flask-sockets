@@ -29,17 +29,19 @@
 
         var username = "";
 
-        $("#send_button").on('click', function(){
-
+        $("#mainform").on('submit', function(e){
+            e.preventDefault();
             if ((username=="") && ($('#person-name'))){
                 username = $('#person-name').val();
                 $('#person-name').remove();
             }
-            //socket.emit('user', pname);
+
             socket.emit('message',
                 {'message': $('#exampleFormControlTextarea2').val(),
                  'user': username
                 });
+            $('#exampleFormControlTextarea2').val("");
+
         });
 
         socket.on('message_sent', function(msg) {
@@ -56,7 +58,6 @@
             li.className = 'd-flex justify-content-between mb-4 bubble';
             li.innerHTML = text1 + val + text2;
             parent.append(li);
-            $('#exampleFormControlTextarea2').value = "";
             console.log(msg);
         });
 
