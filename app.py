@@ -17,5 +17,5 @@ def handler_message(msg):
     print('User: ' + msg['user'] + ' Message: ' + msg['message'])
     emit('message_sent', {'message': msg['message'], 'user': msg['user']}, broadcast=True)
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     socketio.run(app, host='0.0.0.0')
