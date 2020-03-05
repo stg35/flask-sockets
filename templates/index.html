@@ -17,21 +17,21 @@
     $(document).ready(function(){
         var socket = io.connect('http://'+ '{{ ip }}' +':5000');
 
-        var username = {{ username }};
+        var username = '{{ username }}';
         console.log(username);
+
+        document.getElementById('username').innerHTML = username;
 
         $("#mainform").on('submit', function(e){
             e.preventDefault();
-            if ((username=="") && ($('#person-name'))){
-                username = $('#person-name').val();
-                $('#person-name').remove();
-            }
-
-            socket.emit('message',
-                {'message': $('#exampleFormControlTextarea2').val(),
-                 'user': username
-                });
-            $('#exampleFormControlTextarea2').val("");
+            if($('#exampleFormControlTextarea2').val()) {
+                socket.emit('message',
+                    {
+                        'message': $('#exampleFormControlTextarea2').val(),
+                        'user': username
+                    });
+                $('#exampleFormControlTextarea2').val("");
+            } else alert('!')
 
         });
 
@@ -68,7 +68,7 @@
               <li class="d-flex justify-content-between mb-4 bubble">
                   <div class="chat-body white p-3 ml-2 z-depth-1">
                   <div class="header">
-                      <strong>Welcome!</strong>
+                      <strong>Welcome, <span id="username"></span>!</strong>
                   </div>
               </div>
               </li>
@@ -78,7 +78,6 @@
               <div class="form-group basic-textarea">
                 <textarea class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3" placeholder="Type your message here..."></textarea>
               </div>
-              <input type="text" placeholder="Your name" id="person-name">
               <button id="send_button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
           </form>
 

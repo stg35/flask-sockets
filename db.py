@@ -2,7 +2,8 @@ from pymongo import MongoClient
 import constants
 
 client = MongoClient(constants.db_connect)
-db = client['sample_analytics']
-collection = db['customers']
+db = client['chats']
 
-print(collection.count_documents({"_id":"1"}))
+def insertUser(username, password):
+    db['users'].insert_one({'username': username, 'password': password})
+
