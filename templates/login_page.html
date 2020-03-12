@@ -78,8 +78,11 @@
     if('{{ registered }}' == 'True') {
         alert('You have already registered!');
     }
-    if('{{ error }}' == 'True') {
-        alert('Try again.');
+    if('{{ errorpass }}' == 'True') {
+        alert('Неверный пароль');
+    }
+    if('{{ erroruser }}' == 'True') {
+        alert('Неверный логин');
     }
 </script>
 <!--===============================================================================================-->

@@ -9,11 +9,18 @@ def insertUser(username, password):
     db['users'].insert_one({'username': username, 'password': password})
 
 
-def findUP(username, password):
+def findUser(username):
+    if db['users'].find({'username': username}).count() > 0:
+        return True
+    else:
+        return False
+
+def findPassword(username, password):
     if db['users'].find({'username': username, 'password': password}).count() > 0:
         return True
     else:
         return False
+
 
 def addMessage(message, user):
     db['messages'].insert_one({'user': user, 'message': message})

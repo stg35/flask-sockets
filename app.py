@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for
 from flask_socketio import SocketIO, emit
 import constants
 import hashlib
-from db import insertUser, findUP, addMessage
+from db import insertUser, addMessage, findPassword, findUser
 import requests
 
 app = Flask(__name__)
@@ -19,10 +19,12 @@ users = []
 @app.route('/')
 def index():
         registered = False
-        error = False
+        errorpass = False
+        erroruser = False
         if request.args.get('registered'): registered = True
-        if request.args.get('error'): error = True
-        return render_template('login_page.html', registered=registered, error=error)
+        if request.args.get('erroruser'): erroruser = True
+        if request.args.get('errorpass'): errorpass = True
+        return render_template('login_page.html', registered=registered, erroruser=erroruser, errorpass=errorpass)
 
 @app.route('/adm', methods=['GET', 'POST'])
 def adm():
@@ -42,10 +44,13 @@ def chat():
         username = request.form['username']
         password = request.form['password']
         hashed_password = hashlib.sha224(password.encode('utf-8')).hexdigest()
-        if findUP(username, hashed_password):
-            return render_template('index.html', username=username)
+        if findUser(username):
+            if findPassword(username, hashed_password):
+                return render_template('index.html', username=username)
+            else:
+                return redirect('/?errorpass=True')
         else:
-            return redirect('/?error=True')
+            return redirect('/?erroruser=True')
     return redirect('/')
 
 @socketio.on('message')
