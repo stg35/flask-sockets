@@ -16,17 +16,8 @@ ip = constants.server_ip
 
 users = []
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        hashed_password = hashlib.sha224(password.encode('utf-8')).hexdigest()
-        if findUP(username, hashed_password):
-            return redirect(url_for('chat', username=username))
-        else:
-            return render_template('login_page.html', error=True)
-    else:
         registered = False
         error = False
         if request.args.get('registered'): registered = True
@@ -45,10 +36,17 @@ def adm():
     else:
         return render_template('admin.html')
 
-@app.route('/chat')
+@app.route('/chat', methods=['POST', 'GET'])
 def chat():
-    username = request.args.get('username')
-    return render_template('index.html', username=username)
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashed_password = hashlib.sha224(password.encode('utf-8')).hexdigest()
+        if findUP(username, hashed_password):
+            return render_template('index.html', username=username)
+        else:
+            return redirect('/?error=True')
+    return redirect('/')
 
 @socketio.on('message')
 def handler_message(msg):
