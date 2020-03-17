@@ -38,13 +38,15 @@
             messages.push(a);
         {% endfor %}
 
+        messages = messages.reverse();
+
         for (var i = 0; i < messages.length; i++){
             var name = messages[i][1].user;
             var val = messages[i][2].message;
             var parent = $('#list');
             var li = document.createElement('li');
             li.className = 'd-flex justify-content-between mb-4 bubble';
-            li.innerHTML = text1 + "time" + text2 + name + text3 + val + text4;
+            li.innerHTML = text1 + messages[i][3].timestamp + text2 + name + text3 + val + text4;
             parent.append(li);
         }
 
@@ -67,7 +69,7 @@
             var parent = $('#list');
             var li = document.createElement('li');
             li.className = 'd-flex justify-content-between mb-4 bubble';
-            li.innerHTML = text1 + "time" + text2 + name + text3 + val + text4;
+            li.innerHTML = text1 + msg.timestamp + text2 + name + text3 + val + text4;
             parent.append(li);
             console.log(msg);
         });
