@@ -6,7 +6,7 @@
 
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA8KciAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEQAAAAAAAAAREAAAAAAAABERAAAREREREREAARERERERERABEREREREREAEREREREREQARERERERERABEREREREREAEREREREREQARERERERERAAERERERERAAAAAAAAAAAAAAAAAAAAAAD//wAA/98AAP/PAAD/xwAA/8MAAMADAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAwAMAAP//AAD//wAA" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="../static/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
     <script src="../static/vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/vendor/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
@@ -25,10 +25,10 @@
 
         var messages = [];
         var a = [];
-
-        text1 = '<div class="chat-body white p-3 ml-2 z-depth-1"><div class="header"><strong>';
-        text2 = '</strong></div><p class="mb-0">';
-        text3 = '</p></div>';
+        text1 = '<div class="chat-body white p-3 ml-2 z-depth-1"><p class="small">';
+        text2 = '</p><p class="message"><strong>';
+        text3 = ': </strong>';
+        text4 = '</p></div>';
 
         {% for i in messages %}
             a = []
@@ -44,7 +44,7 @@
             var parent = $('#list');
             var li = document.createElement('li');
             li.className = 'd-flex justify-content-between mb-4 bubble';
-            li.innerHTML = text1 + name + text2 + val + text3;
+            li.innerHTML = text1 + "time" + text2 + name + text3 + val + text4;
             parent.append(li);
         }
 
@@ -67,7 +67,7 @@
             var parent = $('#list');
             var li = document.createElement('li');
             li.className = 'd-flex justify-content-between mb-4 bubble';
-            li.innerHTML = text1 + name + text2 + val + text3;
+            li.innerHTML = text1 + "time" + text2 + name + text3 + val + text4;
             parent.append(li);
             console.log(msg);
         });
@@ -86,15 +86,9 @@
 
         <div class="chat-message">
 
-          <ul id="list" class="list-unstyled chat" >
-              <li class="d-flex justify-content-between mb-4 bubble">
-                  <div class="chat-body white p-3 ml-2 z-depth-1">
-                  <div class="header">
-                      <strong>Welcome, <span id="username"></span>!</strong>
-                  </div>
-              </div>
-              </li>
-          </ul>
+              <h2>Welcome, <span id="username"></span>!</h2>
+
+          <ul id="list" class="list-unstyled chat"></ul>
 
           <form id="mainform" action="#">
               <div class="form-group basic-textarea">
