@@ -3,8 +3,8 @@ from flask import render_template, request, redirect, url_for
 from flask_socketio import SocketIO, emit
 import constants
 import hashlib
-from db import insertUser, addMessage, findPassword, findUser
-import requests
+from db import insertUser, addMessage, findPassword, findUser, lastMessages
+from datetime import datetime
 
 app = Flask(__name__)
 app.debug = True
@@ -15,6 +15,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 ip = constants.server_ip
 
 users = []
+
+counter = []
 
 @app.route('/')
 def index():
@@ -46,7 +48,7 @@ def chat():
         hashed_password = hashlib.sha224(password.encode('utf-8')).hexdigest()
         if findUser(username):
             if findPassword(username, hashed_password):
-                return render_template('index.html', username=username)
+                return render_template('index.html', username=username, messages=lastMessages())
             else:
                 return redirect('/?errorpass=True')
         else:
@@ -55,9 +57,10 @@ def chat():
 
 @socketio.on('message')
 def handler_message(msg):
-    print('User: ' + msg['user'] + ' Message: ' + msg['message'])
-    emit('message_sent', {'message': msg['message'], 'user': msg['user']}, broadcast=True)
-    addMessage(msg['message'], msg['user'])
+
+    date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    emit('message_sent', {'message': msg['message'], 'user': msg['user'], 'timestamp': date_time}, broadcast=True)
+    addMessage(msg['message'], msg['user'], date_time, len(counter))
 
 @socketio.on('connect')
 def handler_connection():

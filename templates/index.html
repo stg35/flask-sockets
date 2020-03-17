@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/style.css">
     <script src="../static/vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+    <script src="../static/vendor/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -22,6 +22,31 @@
         console.log(username);
 
         document.getElementById('username').innerHTML = username;
+
+        var messages = [];
+        var a = [];
+
+        text1 = '<div class="chat-body white p-3 ml-2 z-depth-1"><div class="header"><strong>';
+        text2 = '</strong></div><p class="mb-0">';
+        text3 = '</p></div>';
+
+        {% for i in messages %}
+            a = []
+            {% for key, value in i.items() %}
+                a.push({'{{ key }}': '{{ value }}'});
+            {% endfor %}
+            messages.push(a);
+        {% endfor %}
+
+        for (var i = 0; i < messages.length; i++){
+            var name = messages[i][1].user;
+            var val = messages[i][2].message;
+            var parent = $('#list');
+            var li = document.createElement('li');
+            li.className = 'd-flex justify-content-between mb-4 bubble';
+            li.innerHTML = text1 + name + text2 + val + text3;
+            parent.append(li);
+        }
 
         $("#mainform").on('submit', function(e){
             e.preventDefault();
@@ -38,15 +63,11 @@
 
         socket.on('message_sent', function(msg) {
             var name = msg.user;
-
-            text1 = '<div class="chat-body white p-3 ml-2 z-depth-1"><div class="header"><strong>' + name + '</strong></div><p class="mb-0">';
-            text2 = '</p></div>';
-
             var val = msg.message;
             var parent = $('#list');
             var li = document.createElement('li');
             li.className = 'd-flex justify-content-between mb-4 bubble';
-            li.innerHTML = text1 + val + text2;
+            li.innerHTML = text1 + name + text2 + val + text3;
             parent.append(li);
             console.log(msg);
         });
