@@ -33,3 +33,9 @@ def lastMessages():
             k+=1
         break
     return messages
+
+def getLastMessage():
+    if db['messages'].count() > 0:
+        return db['messages'].find().sort('_id', -1).limit(1)[0]['_id']
+    else:
+        return 0
