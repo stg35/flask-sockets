@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for
 from flask_socketio import SocketIO, emit
 import constants
 import hashlib
-from db import insertUser, addMessage, findPassword, findUser, lastMessages, getLastMessage
+from db import insertUser, addMessage, findPassword, findUser, lastMessages, getIDLastMessage
 from datetime import datetime
 
 app = Flask(__name__)
@@ -55,7 +55,7 @@ def chat():
 
 @socketio.on('message')
 def handler_message(msg):
-    counter = int(getLastMessage() + 1)
+    counter = int(getIDLastMessage() + 1)
     date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     emit('message_sent', {'message': msg['message'], 'user': msg['user'], 'timestamp': date_time}, broadcast=True)
     addMessage(msg['message'], msg['user'], date_time, counter)

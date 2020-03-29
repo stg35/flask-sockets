@@ -33,7 +33,7 @@
         {% for i in messages %}
             a = []
             {% for key, value in i.items() %}
-                a.push({'{{ key }}': '{{ value }}'});
+                a.push({'{{ key }}':'{{ value }}'});
             {% endfor %}
             messages.push(a);
         {% endfor %}
@@ -45,10 +45,11 @@
             var val = messages[i][2].message;
             var parent = $('#list');
             var li = document.createElement('li');
-            li.className = 'd-flex justify-content-between mb-4 bubble';
+            li.className = 'd-flex justify-content-between mb-4 bubble grey';
             li.innerHTML = text1 + messages[i][3].timestamp + text2 + name + text3 + val + text4;
             parent.append(li);
         }
+
 
         $("#mainform").on('submit', function(e){
             e.preventDefault();
@@ -59,8 +60,7 @@
                         'user': username
                     });
                 $('#exampleFormControlTextarea2').val("");
-            } else alert('!')
-
+            }
         });
 
         socket.on('message_sent', function(msg) {
@@ -68,11 +68,14 @@
             var val = msg.message;
             var parent = $('#list');
             var li = document.createElement('li');
-            li.className = 'd-flex justify-content-between mb-4 bubble';
+            li.className = 'd-flex justify-content-between mb-4 bubble white';
             li.innerHTML = text1 + msg.timestamp + text2 + name + text3 + val + text4;
             parent.append(li);
+            $('#list').animate({scrollTop: $('#list').prop("scrollHeight")}, 500);
             console.log(msg);
         });
+
+         $('#list').animate({scrollTop: $('#list').prop("scrollHeight")}, 0);
 
     });
 </script>
@@ -87,16 +90,15 @@
       <div class="col-md-12 col-xl-12 pl-md-3 px-lg-auto px-0">
 
         <div class="chat-message">
-
-              <h2>Welcome, <span id="username"></span>!</h2>
-
-          <ul id="list" class="list-unstyled chat"></ul>
-
+            <div class="header">
+                  <h2>Welcome, <span id="username"></span>!</h2>
+            </div>
+                <ul id="list" class="list-unstyled chat"></ul>
           <form id="mainform" action="#">
               <div class="form-group basic-textarea">
-                <textarea class="form-control pl-2 my-0" id="exampleFormControlTextarea2" rows="3" placeholder="Type your message here..."></textarea>
+                <input class="form-control pl-2 my-0" id="exampleFormControlTextarea2" onkeypress="onEnter();" rows="3" placeholder="Напишите сообщение..." style="resize: none;">
               </div>
-              <button id="send_button" class="btn btn-info btn-rounded btn-sm waves-effect waves-light float-right">Send</button>
+              <button id="send_button" class="btn btn-success float-right">Отправить</button>
           </form>
 
         </div>
@@ -111,4 +113,11 @@
 </div>
 
 </body>
+<script>
+    function onEnter() {
+        if(window.event.keyCode === 13) {
+            $('#send_button').click();
+        }
+    }
+</script>
 </html>

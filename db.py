@@ -25,16 +25,15 @@ def addMessage(message, user, timestamp, id):
     db['messages'].insert_one({'_id': id, 'user': user, 'message': message, 'timestamp': timestamp})
 
 def lastMessages():
-    k = 0
+    k = 1
     messages = []
-    while k < 10:
-        for message in db['messages'].find().sort('_id', -1):
-            messages.append(message)
-            k+=1
-        break
+    for message in db['messages'].find().sort('_id', -1):
+        if k > 10: break
+        else: k+=1
+        messages.append(message)
     return messages
 
-def getLastMessage():
+def getIDLastMessage():
     if db['messages'].count() > 0:
         return db['messages'].find().sort('_id', -1).limit(1)[0]['_id']
     else:
